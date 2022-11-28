@@ -7,11 +7,11 @@ from VGGFaceModel import VGGFaceModel
 
 
 class mtcnnModel:
-     def __init__(self,input_file,input_image,aline_image,Possible_face):
+     def __init__(self,input_file,input_image,align_image,Possible_face):
          self.input_file = input_file
 		 self.input_image = input_image
 		 self.detector = MTCNN(steps_threshold=[0.0, 0.0, 0.0])
-		 self.aline_image = aline_image
+		 self.align_image = align_image
 		 self.Possible_face = Possible_face
 			  
      def Get_input(self): 
@@ -44,23 +44,23 @@ class mtcnnModel:
          return np.array(m), (int(w), int(w))
 		 
 		 
-	 def Aline_celebrity(self):
+	 def Align_celebrity(self):
 	     dataset_path = 'Image'
-         Aline_path = 'Aline'
+         Align_path = 'Align'
          celebrity_filenames = next(walk(dataset_path), (None, None, []))[2]   
          for j in celebrity_filenames:
              filename = dataset_path + '/'+j
              img = cv2.imread(filename)
              resize_img = cv2.resize(img,dsize=(500,500)) # After compress image,face may not clear to show
              mat, size =  self.affineMatrix(self.landmarks(resize_img ))
-             aline_img =  cv2.warpAffine(resize_img, mat, size)
-             aline_img = cv2.cvtColor(aline_img, cv2.COLOR_BGR2RGB)
-             output_filename = Aline_path+'/'+j
-             cv2.imwrite(output_filename, aline_img)
-		 aline_filenames = next(walk(Aline_path), (None, None, []))[2]   
+             align_img =  cv2.warpAffine(resize_img, mat, size)
+             align_img = cv2.cvtColor(aline_img, cv2.COLOR_BGR2RGB)
+             output_filename = Align_path+'/'+j
+             cv2.imwrite(output_filename, align_img)
+		 align_filenames = next(walk(Align_path), (None, None, []))[2]   
          for i in aline_filenames:
-             filename = Aline_path+'/'+i
-             self.aline_image.append(filename)
+             filename = Align_path+'/'+i
+             self.align_image.append(filename)
 			 
 	 def generate_user_faces(self,img):
 	     img = cv2.imread(img)
