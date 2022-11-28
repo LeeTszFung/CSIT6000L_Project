@@ -30,15 +30,15 @@ class VGGFaceModel:
         return score
     
 	
-	def search_most_similar_face(self,aline_img):
+	def search_most_similar_face(self,align_img):
         images2 =[]
-		Aline_path = 'Aline'
-        user_face = self.extract_face(aline_img)
+		Align_path = 'Align'
+        user_face = self.extract_face(align_img)
         min_score = 1 
         min_filename = ''
-        for i in aline_filenames:
+        for i in align_filenames:
             images2.append(user_face)
-            imagename = Aline_path + '/'+i
+            imagename = Align_path + '/'+i
             compared_img = plt.imread(imagename)
             temp_face = self.extract_face(compared_img)
             images2.append(temp_face)
