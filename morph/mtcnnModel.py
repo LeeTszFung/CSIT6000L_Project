@@ -61,19 +61,19 @@ class mtcnnModel:
              filename = Align_path+'/'+i
              self.align_image.append(filename)
 			 
-	 def generate_user_faces(self,img):
+    def generate_user_faces(self,img):
 	     img = cv2.imread(img)
-		 resize_img = cv2.resize(img,dsize=(700,700))
-         faces = sself.detector.detect_faces(cv2.cvtColor(resize_img, cv2.COLOR_BGR2RGB))
-		 i = 0 
-		 for face in faces:
-             if face['confidence'] > 0.99:
-                mat,size = self.affineMatrix(face['keypoints'])
-                aline_img =  cv2.warpAffine(resize_img, mat, size)
-                aline_img =  cv2.cvtColor(aline_img, cv2.COLOR_BGR2RGB)
-                x = userface(INPUT_IMAGE,i,"",0,aline_img)
-                self.Possible_face.append(x)
-                i = i +1 
+	     resize_img = cv2.resize(img,dsize=(700,700))
+             faces = self.detector.detect_faces(cv2.cvtColor(resize_img, cv2.COLOR_BGR2RGB))
+              i = 0 
+	     for face in faces:
+                if face['confidence'] > 0.99:
+                   mat,size = self.affineMatrix(face['keypoints'])
+                   aline_img =  cv2.warpAffine(resize_img, mat, size)
+                   aline_img =  cv2.cvtColor(aline_img, cv2.COLOR_BGR2RGB)
+                   x = userface(INPUT_IMAGE,i,"",0,aline_img)
+                   self.Possible_face.append(x)
+                    i = i +1 
      def image_mapping(self):
 	     for user in self.Possible_face:
              result = VGGFaceModel.search_most_similar_face(user.face_image)
