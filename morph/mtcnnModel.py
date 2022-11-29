@@ -54,7 +54,6 @@ class mtcnnModel:
              resize_img = cv2.resize(img,dsize=(500,500)) # After compress image,face may not clear to show
              mat, size =  self.affineMatrix(self.landmarks(resize_img ))
              align_img =  cv2.warpAffine(resize_img, mat, size)
-             align_img = cv2.cvtColor(aline_img, cv2.COLOR_BGR2RGB)
              output_filename = Align_path+'/'+j
              cv2.imwrite(output_filename, align_img)
 		 align_filenames = next(walk(Align_path), (None, None, []))[2]   
