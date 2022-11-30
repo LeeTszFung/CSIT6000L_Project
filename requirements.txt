@@ -11,3 +11,4 @@ keras_vggface.vggface
 scipy.spatial.distance 
 mtcnn.mtcnn
 cv2
+keras_applications
