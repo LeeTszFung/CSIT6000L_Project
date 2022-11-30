@@ -6,3 +6,7 @@ pyamg
 requests
 scipy
 wheel
+keras_vggface.utils
+keras_vggface.vggface
+scipy.spatial.distance 
+mtcnn.mtcnn
