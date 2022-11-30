@@ -5,7 +5,7 @@ from VGGFaceModel import VGGFaceModel
 import cv2
 
 if __name__ == '__main__':
-    size = (600, 500)
+        size = (600, 500)
 	mtcnnModel.Get_input()
 	mtcnnModel.Align_celebrity()
 	for input_image in mtcnnModel.input_file:
