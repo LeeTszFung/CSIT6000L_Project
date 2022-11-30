@@ -1,0 +1,8 @@
+dlib
+matplotlib
+numpy
+opencv-python
+pyamg
+requests
+scipy
+wheel
