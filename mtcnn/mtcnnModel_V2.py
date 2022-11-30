@@ -24,12 +24,12 @@ class mtcnnModel:
 
 	
 	
-	 def landmarks(self,img):
+     def landmarks(self,img):
          faces = self.detector.detect_faces(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
          face = max(faces, key=lambda x: x['confidence'])  # The most clear one
          return face['keypoints']
 		 
-	 def affineMatrix(self,lmks, scale=2.5):
+     def affineMatrix(self,lmks, scale=2.5):
          nose = np.array(lmks['nose'], dtype=np.float32)
          left_eye = np.array(lmks['left_eye'], dtype=np.float32)
          right_eye = np.array(lmks['right_eye'], dtype=np.float32)
@@ -44,8 +44,8 @@ class mtcnnModel:
          return np.array(m), (int(w), int(w))
 		 
 		 
-	 def Align_celebrity(self):
-	     dataset_path = 'Image'
+     def Align_celebrity(self):
+	 dataset_path = 'Image'
          Align_path = 'Align'
          celebrity_filenames = next(walk(dataset_path), (None, None, []))[2]   
          for j in celebrity_filenames:
@@ -62,8 +62,8 @@ class mtcnnModel:
              self.align_image.append(filename)
 			 
     def generate_user_faces(self,img):
-	     img = cv2.imread(img)
-	     resize_img = cv2.resize(img,dsize=(700,700))
+	 img = cv2.imread(img)
+	 resize_img = cv2.resize(img,dsize=(700,700))
          faces = self.detector.detect_faces(cv2.cvtColor(resize_img, cv2.COLOR_BGR2RGB))
 	     for face in faces:
                 if face['confidence'] > 0.99:
@@ -76,7 +76,7 @@ class mtcnnModel:
                    x = userface(INPUT_IMAGE,i,"",0,aline_img)
                    self.Possible_face.append(x)
                    i = i +1 
-     def image_mapping(self):
+      def image_mapping(self):
 	     for user in self.Possible_face:
              result = VGGFaceModel.search_most_similar_face(user.face_image)
              user.score = result[0]
