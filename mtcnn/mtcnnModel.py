@@ -7,12 +7,12 @@ from VGGFaceModel import VGGFaceModel
 
 
 class mtcnnModel:
-     def __init__(self,input_file,input_image,align_image,Possible_face,previous_name):
-        self.input_file = input_file
+     def __init__(self):
+        self.input_file = []
         self.detector = mtcnn.MTCNN(steps_threshold=[0.0, 0.0, 0.0])
         #self.align_image = align_image
-        self.Possible_face = Possible_face
-        self.previous_name = previous_name
+        self.Possible_face = []
+        self.previous_name = None
 
      def Get_input(self): 
         Input_path = 'Input'
@@ -50,28 +50,25 @@ class mtcnnModel:
             align_img =  cv2.warpAffine(resize_img, mat, size)
             output_filename = Align_path+'/'+j
             cv2.imwrite(output_filename, align_img)
-        align_filenames = next(walk(Align_path), (None, None, []))[2]   
-        for i in align_filenames:
-            filename = Align_path+'/'+i
-            VGGFaceModel.align_image.append(filename)
      def generate_user_faces(self,img):
+        img_path = img
         img = cv2.imread(img)
         resize_img = cv2.resize(img,dsize=(700,700))
         faces = self.detector.detect_faces(cv2.cvtColor(resize_img, cv2.COLOR_BGR2RGB))
         for face in faces:
             if face['confidence'] > 0.99:
-                if(img != self.previous_name):
+                if(img_path != self.previous_name or self.previous_name is None):
                        i = 0
-                       self.previous_name = img
+                       self.previous_name = img_path
                 mat,size = self.affineMatrix(face['keypoints'])
                 align_img =  cv2.warpAffine(resize_img, mat, size)
                 align_img =  cv2.cvtColor(align_img, cv2.COLOR_BGR2RGB)
-                x = userface(img,i,"",0,align_img)
+                x = userface(img_path,i,"",0,align_img)
                 self.Possible_face.append(x)
                 i = i +1 
      def image_mapping(self):
           for user in self.Possible_face:
-            result = VGGFaceModel.search_most_similar_face(user.face_image)
+            result = VGGFaceModel().search_most_similar_face(user.face_image)
             user.score = result[0]
             user.matched = result[1]
 

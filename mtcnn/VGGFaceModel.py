@@ -7,12 +7,12 @@ from keras_vggface import vggface
 from scipy.spatial.distance import cosine 
 #from mtcnnModel import mtcnnModel
 import matplotlib as plt
-from os import walk 
+from os import walk
 
 class VGGFaceModel:
     def __init__(self):
         self.detector = MTCNN(steps_threshold=[0.0, 0.0, 0.0])
-        self.model = vggface.VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
+        self.align_image = []
         
     def extract_face(self,image,resize=(224,224)):
         faces = self.detector.detect_faces(image)
@@ -24,7 +24,8 @@ class VGGFaceModel:
     def get_embeddings(self,faces):
         face  = np.asarray(faces,'float32')
         face =  utils.preprocess_input(face,version=2)
-        yhat = self.model.predict(face)
+        model = vggface.VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
+        yhat = model.predict(face)
         return yhat
     def get_similarity(self,faces):
         embeddings = self.get_embeddings(faces)
@@ -33,14 +34,14 @@ class VGGFaceModel:
     def search_most_similar_face(self,align_img):
         images2 =[]
         Align_path = 'Align'
-        align_filenames = next(walk(Align_path), (None, None, []))[2]   
+        celebrity_filenames = next(walk(Align_path), (None, None, []))[2]   
         user_face = self.extract_face(align_img)
         min_score = 1 
         min_filename = ''
-        for i in align_filenames:
+        for i in celebrity_filenames:
             images2.append(user_face)
             imagename = Align_path + '/'+i
-            compared_img = plt.imread(imagename)
+            compared_img = cv2.imread(imagename)
             temp_face = self.extract_face(compared_img)
             images2.append(temp_face)
             score = self.get_similarity(images2)
